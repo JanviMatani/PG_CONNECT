@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PG Connect - Login</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="login.css">
+    <script defer src="login.js"></script>
+</head>
+<body>
+    <div class="container">
+        <form id="loginForm">
+            <h1>Login</h1>
+            <div class="input-control">
+                <label for="loginEmail">Email</label>
+                <input id="loginEmail" name="email" type="email">
+                <div class="error"></div>
+            </div>
+            <div class="input-control">
+                <label for="loginPassword">Password</label>
+                <input id="loginPassword" name="password" type="password">
+                <div class="error"></div>
+            </div>
+            <button type="submit">Sign In</button>
+            <p style="text-align: center; margin-top: 15px;">
+                Don't have an account?
+                <a href="signin.html" style="color: rgb(41, 57, 194);">Sign Up</a>
+            </p>
+        </form>
+    </div>
+</body>
+</html>
