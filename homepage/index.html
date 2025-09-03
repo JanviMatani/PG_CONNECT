@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flatmate Finder</title>
+  <link rel="stylesheet" href="index.css">
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="logo">PG_Connect</div>
+    <div class="search-bar">
+      <input type="text" placeholder="Search apartments...">
+      <button>Search</button>
+    </div>
+    <div class="cart">Chosen Apartments 🛒 </div>
+  </nav>
+
+  <div class="main-container">
+    <!-- Filter Section -->
+    <aside class="filters">
+      <h3>Filters</h3>
+
+      <!-- Budget Range -->
+      <div class="filter-group">
+        <h4>Your Budget (per month)</h4>
+        <label>Min: 
+          <input type="range" min="1000" max="70000" value="20000">
+        </label><br>
+        <label>Max: 
+          <input type="range" min="1000" max="70000" value="50000">
+        </label>
+        <p class="note">(Move sliders to set budget)</p>
+      </div>
+
+      <!-- Star Rating -->
+      <div class="filter-group">
+        <h4>Star Rating</h4>
+        <label><input type="checkbox"> ⭐⭐⭐⭐⭐ (80)</label><br>
+        <label><input type="checkbox"> ⭐⭐⭐⭐ (397)</label><br>
+        <label><input type="checkbox"> ⭐⭐⭐ (1006)</label><br>
+        <label><input type="checkbox"> ⭐⭐ (943)</label><br>
+        <label><input type="checkbox"> ⭐ (518)</label>
+      </div>
+
+      <!-- Search on Map -->
+      <div class="filter-group">
+        <h4>Search on Map</h4>
+        <div class="map-box">
+          <img src="map.jpg" alt="Map">
+          <p>SEARCH ON MAP</p>
+        </div>
+        <input type="text" class="map-search" placeholder="Search location...">
+      </div>
+
+      <!-- Flatmates -->
+      <div class="filter-group">
+        <h4>Flatmates</h4>
+        <label><input type="checkbox"> 1 Flatmate</label><br>
+        <label><input type="checkbox"> 2 Flatmates</label><br>
+        <label><input type="checkbox"> 3+ Flatmates</label>
+      </div>
+
+      <!-- Area -->
+      <div class="filter-group">
+        <h4>Area</h4>
+        <label><input type="checkbox"> Downtown</label><br>
+        <label><input type="checkbox"> Suburbs</label><br>
+        <label><input type="checkbox"> Near University</label>
+      </div>
+    </aside>
+
+    <!-- Flats Section -->
+    <section class="flats">
+      <div class="card">
+        <img src="kuchto.jpg" alt="Flat 1">
+        <h4>2 BHK in Downtown</h4>
+        <p>₹8500/month</p>
+        <button>Add to Chosen</button>
+      </div>
+
+      <div class="card">
+        <img src="kuchto2.avif" alt="Flat 2">
+        <h4>1 BHK Near University</h4>
+        <p>₹6000/month</p>
+        <button>Add to Chosen</button>
+      </div>
+
+      <div class="card">
+        <img src="kuchto.jpg" alt="Flat 3">
+        <h4>3 BHK in Suburbs</h4>
+        <p>₹12000/month</p>
+        <button>Add to Chosen</button>
+      </div>
+
+      <div class="card">
+        <img src="kuchto2.avif" alt="Flat 4">
+        <h4>Studio Apartment</h4>
+        <p>₹5000/month</p>
+        <button>Add to Chosen</button>
+      </div>
+    </section>
+  </div>
+</body>
+</html>
