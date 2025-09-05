@@ -8,10 +8,12 @@ body {
     width: 320px;
     margin: 18vh auto 0 auto;
     padding: 25px;
-    background-color: #f7f9fc; /* light background for contrast */
+    background-color: rgba(247, 249, 252, 0.7);
     border-radius: 8px;
     box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+    backdrop-filter: blur(8px);
 }
+
 
 #loginForm h1 {
     color: black;
