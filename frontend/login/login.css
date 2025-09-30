@@ -1,15 +1,15 @@
 /* Login page styling */
 body {
-    background: linear-gradient(to right, #0f2027, #203a43, #2c5364); /* darker blue gradient */
+    background: linear-gradient(to right,  #040c38, #232425); /* darker blue gradient */
     font-family: 'Poppins', sans-serif;
 }
 
 .container {
-    
+
     width: 320px;
     margin: 18vh auto 0 auto;
     padding: 25px;
-    background-color: rgba(247, 249, 252, 0.7);
+    background-color: rgb(231, 235, 239);
     border-radius: 8px;
     box-shadow: 0 8px 20px rgba(0,0,0,0.25);
     backdrop-filter: blur(8px);

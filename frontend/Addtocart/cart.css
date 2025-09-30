@@ -1,85 +1,97 @@
+/* Base */
 body {
-  font-family: Arial, sans-serif;
+  font-family: 'Segoe UI', Tahoma, sans-serif;
   margin: 0;
   padding: 0;
-  background: #eaeded;
+  background: #f0f4f8;
   color: #333;
   line-height: 1.6;
 }
-
+.logo {
+  font-size: 1.6rem;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+/* Header */
 header {
-  background: linear-gradient(90deg, #041229, #1e61ae);
+  background: linear-gradient(90deg, #040c38, #0f0f0f);
   color: white;
-  padding: 30px 20px;
+  padding: 25px 20px;
   font-size: 18px;
   font-weight: bold;
   position: sticky;
   top: 0;
   z-index: 1000;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
 }
 
 .header-content {
   display: flex;
   align-items: center;
-  justify-content: space-between; 
+  justify-content: space-between;
   width: 100%;
 }
 
-.logo {
-  width: 80px;
-  height: 80px;
-  object-fit: contain;
-  margin-right: 10px;
-  border-radius: 25px;
-  box-shadow: #4081d0 0px 5px 60px 5px;
-}
 
 .cart-section {
   display: flex;
   align-items: center;
-  color: white;
-  font-size: 50px;
+  font-size: 28px;
+  gap: 8px;
 }
 
 .cart-icon {
   width: 50px;
   height: 50px;
   object-fit: contain;
-  margin-right: 5px;
+  transition: transform 0.3s ease;
 }
 
+.cart-icon:hover {
+  transform: scale(1.1);
+}
+
+/* Container */
 .container {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 25px;
   padding: 20px;
 }
 
+/* Flats Section */
 .flats-section {
   padding: 20px;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 20px;
+  gap: 25px;
 }
 
 .flat-card {
   background: white;
-  border-radius: 8px;
+  border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   cursor: pointer;
 }
 
 .flat-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
 }
 
 .flat-card img {
   width: 100%;
-  height: 150px;
+  height: 160px;
   object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.flat-card:hover img {
+  transform: scale(1.05);
 }
 
 .flat-content {
@@ -88,52 +100,60 @@ header {
 
 .flat-content h3 {
   margin: 0 0 10px;
-  color: #131921;
+  color: #0d1b2a;
   font-size: 18px;
+  font-weight: 600;
 }
 
 .flat-content p {
-  margin: 0 0 5px;
+  margin: 0 0 8px;
   font-size: 14px;
   color: #555;
 }
 
 .view-btn {
-  padding: 8px 12px;
-  background: #2029a1;
+  padding: 10px 15px;
+  background: #1e61ae;
   border: none;
   color: white;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
   margin-top: 10px;
+  font-weight: 500;
+  transition: background 0.3s, transform 0.2s;
 }
 
 .view-btn:hover {
   background: #21c0e4;
+  transform: translateY(-2px);
 }
 
+/* Back Home Button */
 .back-home-btn {
-  position: fixed;     
-  bottom: 20px;         
-  left: 50%;             
-  transform: translateX(-50%); 
-  background-color: #ff9900;
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, #0b0b0b, #0b0b0b);
   color: white;
-  padding: 10px 20px;
-  border-radius: 5px;
+  padding: 12px 22px;
+  border-radius: 8px;
   text-decoration: none;
   font-size: 16px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-  transition: background-color 0.3s, transform 0.2s;
-  z-index: 1000;
+  font-weight: 600;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+  transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
   cursor: pointer;
+  z-index: 1000;
 }
 
 .back-home-btn:hover {
-  background-color: #f7a731;
-  transform: translateX(-50%) translateY(-2px); 
+  background: linear-gradient(135deg, #0c0905, #0c0c0c);
+  transform: translateX(-50%) translateY(-3px);
+  box-shadow: 0 8px 18px rgba(0,0,0,0.3);
 }
 
+/* Responsive */
 @media (min-width: 768px) {
   .container {
     flex-direction: row;
@@ -141,8 +161,11 @@ header {
 }
 
 @media (max-width: 767px) {
-  .cart {
-    position: static;
-    max-height: none;
+  .cart-section {
+    font-size: 24px;
+  }
+
+  .flat-card img {
+    height: 140px;
   }
 }

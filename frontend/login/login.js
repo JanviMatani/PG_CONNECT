@@ -4,7 +4,7 @@ const loginPassword = document.getElementById('loginPassword');
 
 loginForm.addEventListener('submit', async e => {
     e.preventDefault();
-    
+
     if (validateLoginInputs()) {
         await handleLogin();
     }
@@ -36,7 +36,7 @@ const isValidEmail = email => {
 const validateLoginInputs = () => {
     const emailValue = loginEmail.value.trim();
     const passwordValue = loginPassword.value.trim();
-    
+
     let isValid = true;
 
     if(emailValue === '') {
@@ -55,32 +55,32 @@ const validateLoginInputs = () => {
     } else {
         setSuccess(loginPassword);
     }
-    
+
     return isValid;
 };
 
 const handleLogin = async () => {
     const emailValue = loginEmail.value.trim();
     const passwordValue = loginPassword.value.trim();
-    
+
     try {
         const response = await fetch('http://localhost:5000/signin', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 
-                email: emailValue, 
-                password: passwordValue 
+            body: JSON.stringify({
+                email: emailValue,
+                password: passwordValue
             })
         });
-        
+
         const data = await response.json();
-        
+
         if (response.ok) {
             alert(`Welcome back, ${data.user.username}!`);
             // Store user info in localStorage for session management
             localStorage.setItem('user', JSON.stringify(data.user));
             // Redirect to dashboard or main page
-            window.location.href = '/dashboard.html';
+            window.location.href = '../homepage/index.html';
         } else {
             // Handle specific error messages
             if (data.message === 'Email not found') {
@@ -91,7 +91,7 @@ const handleLogin = async () => {
                 alert(data.message || 'Login failed');
             }
         }
-        
+
     } catch (error) {
         console.error('Error:', error);
         alert('An error occurred. Please try again.');

@@ -40,7 +40,7 @@ const validateInputs = () => {
     const emailValue = email.value.trim();
     const passwordValue = password.value.trim();
     const password2Value = password2.value.trim();
-    
+
     let isValid = true;
 
     if(usernameValue === '') {
@@ -76,14 +76,14 @@ const validateInputs = () => {
     } else {
         setSuccess(password2);
     }
-    
+
     return isValid;
 };
 const handleFormSubmission = async () => {
     const usernameValue = username.value.trim();
     const emailValue = email.value.trim();
     const passwordValue = password.value.trim();
-    
+
     try {
         // Check if email already exists
         const emailResponse = await fetch('http://localhost:5000/check-email', {
@@ -91,27 +91,27 @@ const handleFormSubmission = async () => {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email: emailValue })
         });
-        
+
         const emailData = await emailResponse.json();
-        
+
         if (emailData.exists) {
             setError(email, 'Email already exists');
             return;
         }
-        
+
         // Register new user
         const signupResponse = await fetch('http://localhost:5000/signup', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 
-                username: usernameValue, 
-                email: emailValue, 
-                password: passwordValue 
+            body: JSON.stringify({
+                username: usernameValue,
+                email: emailValue,
+                password: passwordValue
             })
         });
-        
+
         const signupData = await signupResponse.json();
-        
+
         if (signupResponse.ok) {
             alert('Registration successful! You can now sign in.');
             // Clear form
@@ -124,7 +124,7 @@ const handleFormSubmission = async () => {
         } else {
             alert(signupData.message || 'Registration failed');
         }
-        
+
     } catch (error) {
         console.error('Error:', error);
         alert('An error occurred. Please try again.');
