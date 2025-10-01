@@ -5,16 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Your Added Flats</title>
   <link rel="stylesheet" href="cart.css">
-  
 </head>
 <body>
-  
   <header>
     <div class="header-content">
-      
       <img src="images/logo.jpg" alt="Logo" class="logo">
-
-
       <div class="cart-section">
         <img src="images/cart.png" alt="Cart Icon" class="cart-icon">
         <span>Cart</span>
@@ -22,42 +17,85 @@
     </div>
   </header>
 
+  <section class="flats-section">
+    <div class="flat-card" data-name="Cozy 1BHK" data-location="Andheri East" data-city="Mumbai, Maharashtra" data-rent="₹18,000/month" data-img="https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=400" data-size="1BHK" data-furnished="Semi-furnished" data-amenities="WiFi, Parking, Gym">
+      <img src="https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=400" alt="Cozy 1BHK">
+      <div class="flat-content">
+        <h3>Cozy 1BHK</h3>
+        <p>Location: Andheri East</p>
+        <p>City: Mumbai, Maharashtra</p>
+        <p>Rent: ₹18,000/month</p>
+        <button class="view-btn">View Details</button>
+      </div>
+    </div>
 
-  <!-- Flats Section -->
-<section class="flats-section">
-  <div class="flat-card">
-    <img src="https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=400" alt="Cozy 1BHK">
-    <div class="flat-content">
-      <h3>Cozy 1BHK</h3>
-      <p>Location: Andheri East</p>
-      <p>City: Mumbai, Maharashtra</p>
-      <p>Rent: ₹18,000/month</p>
-      <button class="view-btn">View Details</button>
+    <div class="flat-card" data-name="Modern 2BHK" data-location="Whitefield" data-city="Bangalore, Karnataka" data-rent="₹25,000/month" data-img="https://images.unsplash.com/photo-1599423300746-b62533397364?w=400" data-size="2BHK" data-furnished="Fully-furnished" data-amenities="WiFi, Parking, Gym, Pool">
+      <img src="https://images.unsplash.com/photo-1599423300746-b62533397364?w=400" alt="Modern 2BHK">
+      <div class="flat-content">
+        <h3>Modern 2BHK</h3>
+        <p>Location: Whitefield</p>
+        <p>City: Bangalore, Karnataka</p>
+        <p>Rent: ₹25,000/month</p>
+        <button class="view-btn">View Details</button>
+      </div>
+    </div>
+
+    <div class="flat-card" data-name="Vile Parle 3BHK" data-location="Vile Parle" data-city="Mumbai, Maharashtra" data-rent="₹35,000/month" data-img="https://images.unsplash.com/photo-1586105251261-72a756497a11?w=400" data-size="3BHK" data-furnished="Fully-furnished" data-amenities="WiFi, Parking, Gym, Pool, Balcony">
+      <img src="https://images.unsplash.com/photo-1586105251261-72a756497a11?w=400" alt="Spacious 3BHK">
+      <div class="flat-content">
+        <h3>Vile Parle 3BHK</h3>
+        <p>Location: Vile Parle</p>
+        <p>City: Mumbai, Maharashtra</p>
+        <p>Rent: ₹35,000/month</p>
+        <button class="view-btn">View Details</button>
+      </div>
+    </div>
+  </section>
+
+  <a href="../homepage/index.html" class="back-home-btn">Back to Home</a>
+
+  <!-- Modal for flat details -->
+  <div id="flatModal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn">&times;</span>
+      <img id="modal-img" src="" alt="Flat Image">
+      <h2 id="modal-name"></h2>
+      <p id="modal-location"></p>
+      <p id="modal-city"></p>
+      <p id="modal-size"></p>
+      <p id="modal-furnished"></p>
+      <p id="modal-amenities"></p>
+      <p id="modal-rent"></p>
+      <button id="proceedPaymentBtn" class="view-btn">Proceed to Payment</button>
     </div>
   </div>
 
-  <div class="flat-card">
-    <img src="https://images.unsplash.com/photo-1599423300746-b62533397364?w=400" alt="Modern 2BHK">
-    <div class="flat-content">
-      <h3>Modern 2BHK</h3>
-      <p>Location: Whitefield</p>
-      <p>City: Bangalore, Karnataka</p>
-      <p>Rent: ₹25,000/month</p>
-      <button class="view-btn">View Details</button>
+  <!-- Modal for document / official info -->
+  <div id="docModal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn">&times;</span>
+      <h2>Rental Documentation</h2>
+      <p>Flat Name: <span id="doc-name"></span></p>
+      <p>Location: <span id="doc-location"></span></p>
+      <p>Rent: <span id="doc-rent"></span></p>
+      <p>Please verify your details before proceeding.</p>
+      <label>Your Name: <input type="text" id="user-name" placeholder="Enter your name"></label>
+      <label>Email: <input type="email" id="user-email" placeholder="Enter your email"></label>
+      <label>Phone: <input type="text" id="user-phone" placeholder="Enter your phone"></label><br>
+      <button id="finalPayBtn" class="view-btn">Final Pay</button>
     </div>
   </div>
 
-  <div class="flat-card">
-    <img src="https://images.unsplash.com/photo-1586105251261-72a756497a11?w=400" alt="Spacious 3BHK">
-    <div class="flat-content">
-      <h3>Vile Parle 3BHK</h3>
-      <p>Location: Vile Parle</p>
-      <p>City: Mumbai, Maharashtra</p>
-      <p>Rent: ₹35,000/month</p>
-      <button class="view-btn">View Details</button>
+  <!-- Modal for receipt -->
+  <div id="receiptModal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn">&times;</span>
+      <h2>Payment Receipt</h2>
+      <div id="receiptContent"></div>
+      <button class="view-btn" id="closeReceiptBtn">Close</button>
     </div>
   </div>
-</section>
-<a href="../homepage/index.html" class="back-home-btn">Back to Home</a>
+
+  <script src="cart.js"></script>
 </body>
 </html>
