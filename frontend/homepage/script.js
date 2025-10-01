@@ -1,16 +1,8 @@
-// ====== PG Connect Script ======
-
-// Sample flat data
-const flats = [
-  { id: 1, title: "2 BHK, Downtown", price: 15000, rating: 4.5, flatmates: 2, area: "Downtown", status: "Available", img: "https://picsum.photos/400/250?random=1" },
-  { id: 2, title: "1 BHK, Suburbs", price: 9000, rating: 4.0, flatmates: 1, area: "Suburbs", status: "Available", img: "https://picsum.photos/400/250?random=2" },
-  { id: 3, title: "3 BHK, Uptown", price: 25000, rating: 4.8, flatmates: 3, area: "Uptown", status: "Available", img: "https://picsum.photos/400/250?random=3" },
-  { id: 4, title: "Studio, City Center", price: 12000, rating: 4.2, flatmates: 0, area: "City Center", status: "Available", img: "https://picsum.photos/400/250?random=4" },
-];
+// ====== PG Connect Script with Node.js Backend ======
 
 // ====== State ======
-let cart = JSON.parse(localStorage.getItem("pg_cart")) || [];
-let filters = {};
+let flats = [];
+let cart = [];
 
 // ====== DOM Elements ======
 const flatsContainer = document.querySelector(".flats");
@@ -29,9 +21,51 @@ const applyBtn = document.querySelector(".filter-actions .btn");
 const clearBtn = document.querySelector(".filter-actions .btn-clear");
 const cartCount = document.getElementById("cart-count");
 
+// ====== Backend API ======
+const API_BASE = "http://localhost:5000";
+const USER_ID = 1; // Replace with actual logged-in user ID
+
 // ====== Functions ======
-function saveCart() {
-  localStorage.setItem("pg_cart", JSON.stringify(cart));
+async function fetchFlats() {
+  try {
+    const res = await fetch(`${API_BASE}/api/flats`);
+    flats = await res.json();
+    renderFlats();
+  } catch (err) {
+    console.error('Error fetching flats:', err);
+  }
+}
+
+async function fetchCart() {
+  try {
+    const res = await fetch(`${API_BASE}/api/cart/${USER_ID}`);
+    const data = await res.json();
+    cart = data.map(f => f.flat_id); // store flat IDs
+    updateCartCount();
+  } catch (err) {
+    console.error('Error fetching cart:', err);
+  }
+}
+
+async function addToCart(flatId) {
+  try {
+    const res = await fetch(`${API_BASE}/api/cart`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ user_id: USER_ID, flat_id: flatId })
+    });
+    const data = await res.json();
+    if (data.success) {
+      cart.push(flatId);
+      updateCartCount();
+      renderFlats(); // disable "Add" button after adding
+      alert(data.message);
+    } else {
+      alert(data.message);
+    }
+  } catch (err) {
+    console.error('Error adding to cart:', err);
+  }
 }
 
 function updateCartCount() {
@@ -39,7 +73,7 @@ function updateCartCount() {
 }
 
 function renderFlats() {
-  flatsContainer.innerHTML = "";
+  flatsContainer.innerHTML = '';
 
   let filtered = flats.filter(flat => {
     // Search
@@ -76,10 +110,10 @@ function renderFlats() {
   else if (sortSelect.value === "high-low") filtered.sort((a,b) => b.price - a.price);
   else if (sortSelect.value === "rating") filtered.sort((a,b) => b.rating - a.rating);
 
-  // Render
+  // Render cards
   filtered.forEach(flat => {
-    const card = document.createElement("div");
-    card.className = "flat-card";
+    const card = document.createElement('div');
+    card.className = 'flat-card';
     card.innerHTML = `
       <div class="card-inner">
         <div class="card-front">
@@ -91,34 +125,20 @@ function renderFlats() {
           <p>Rent: ₹${flat.price}/month</p>
           <p>⭐ ${flat.rating} rating</p>
           <p>${flat.flatmates} Flatmates</p>
-          <button class="add-btn" ${flat.status !== "Available" ? "disabled" : ""} data-id="${flat.id}">Add</button>
+          <button class="add-btn" ${cart.includes(flat.id) || flat.status !== "Available" ? 'disabled' : ''} data-id="${flat.id}">
+            ${cart.includes(flat.id) ? 'Added' : 'Add'}
+          </button>
         </div>
       </div>
     `;
     flatsContainer.appendChild(card);
   });
-
-  // Add to Cart
-  document.querySelectorAll(".add-btn").forEach(btn => {
-    btn.addEventListener("click", e => {
-      const id = parseInt(e.target.dataset.id);
-      if (!cart.includes(id)) {
-        cart.push(id);
-        saveCart();
-        updateCartCount();
-        alert("Added to cart!");
-      }
-    });
-  });
 }
 
 // Apply / Clear filters
-function applyFilters() {
-  renderFlats();
-}
-
+function applyFilters() { renderFlats(); }
 function clearFilters() {
-  searchInput.value = "";
+  searchInput.value = '';
   minRange.value = 1000;
   maxRange.value = 70000;
   minValue.textContent = 1000;
@@ -127,25 +147,27 @@ function clearFilters() {
   areaCheckboxes.forEach(c => c.checked = false);
   flatmateCheckboxes.forEach(c => c.checked = false);
   availableOnly.checked = false;
-  sortSelect.value = "default";
+  sortSelect.value = 'default';
   renderFlats();
 }
 
-// Range update
-minRange.addEventListener("input", e => { minValue.textContent = e.target.value; renderFlats(); });
-maxRange.addEventListener("input", e => { maxValue.textContent = e.target.value; renderFlats(); });
+// Event listeners
+minRange.addEventListener('input', e => { minValue.textContent = e.target.value; renderFlats(); });
+maxRange.addEventListener('input', e => { maxValue.textContent = e.target.value; renderFlats(); });
+searchBtn.addEventListener('click', applyFilters);
+searchInput.addEventListener('input', renderFlats);
+applyBtn.addEventListener('click', applyFilters);
+clearBtn.addEventListener('click', clearFilters);
+sortSelect.addEventListener('change', renderFlats);
 
-// Search
-searchBtn.addEventListener("click", applyFilters);
-searchInput.addEventListener("input", () => { renderFlats(); });
+// Delegate add-to-cart clicks
+document.addEventListener('click', e => {
+  if (e.target.classList.contains('add-btn')) {
+    const flatId = parseInt(e.target.dataset.id);
+    if (!cart.includes(flatId)) addToCart(flatId);
+  }
+});
 
-// Filter buttons
-applyBtn.addEventListener("click", applyFilters);
-clearBtn.addEventListener("click", clearFilters);
-
-// Sort
-sortSelect.addEventListener("change", renderFlats);
-
-// Init
-updateCartCount();
-renderFlats();
+// ====== Init ======
+fetchFlats();
+fetchCart();
