@@ -14,9 +14,9 @@ app.use(express.json()); // for parsing JSON bodies
 // ====== MySQL Connection ======
 const db = mysql.createConnection({
     host: 'localhost',
-    user: 'root',        // your MySQL user
+    user: process.env.DB_USER,        // your MySQL user
     password: process.env.DB_PASSWORD,        // your MySQL password
-    database: 'pgconnect' // your database name
+    database: process.env.DB_NAME2,
 });
 
 db.connect(err => {

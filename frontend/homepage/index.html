@@ -10,7 +10,7 @@
 <body>
   <!-- Navbar -->
   <nav class="navbar">
-    <div class="logo"><img src="../landing_stuff/logo.jpg" alt="" height="60px"> PG_Connect</div>
+    <div class="logo"><img src="../landing_stuff/logo.jpg" alt="" height="60px"></div>
     <div class="search-bar">
       <input type="text" placeholder="Search apartments or area...">
       <button class="btn">Search</button>
@@ -53,12 +53,11 @@
 
       <!-- Area -->
       <div class="filter-group">
-        <h4>Area</h4>
-        <label><input type="checkbox" value="Downtown"> Downtown</label><br>
-        <label><input type="checkbox" value="Suburbs"> Suburbs</label><br>
-        <label><input type="checkbox" value="Near University"> Near University</label>
-        
-      </div>
+  <h4>Area</h4>
+  <label><input type="checkbox" class="area-checkbox" value="Andheri">Andheri</label><br>
+  <label><input type="checkbox" class="area-checkbox" value="Bandra East">Bandra East</label><br>
+  <label><input type="checkbox" class="area-checkbox" value="Powai">Powai</label>
+</div>
 
       <!-- Availability -->
       <div class="filter-group">
@@ -78,7 +77,7 @@
       </div>
 
       <!-- Buttons -->
-      
+
       <div class="filter-actions">
         <button class="btn">Apply Filters</button>
         <button class="btn btn-clear">Clear</button>
@@ -87,19 +86,7 @@
 
     <section class="flats">
   <!-- Example Flat Card -->
-  <div class="flat-card">
-    <img src="https://picsum.photos/400/250?random=1" alt="2 BHK Downtown">
-    <div class="flat-info">
-      <h3>2 BHK, Downtown</h3>
-      <p>Location: Downtown</p>
-      <p>Rent: ₹15000/month</p>
-      <p>⭐ 4.5 rating</p>
-      <div class="flat-actions">
-        <button class="add-cart-btn">Add to Cart 🛒</button>
-        <button class="view-btn">View Details</button>
-      </div>
-    </div>
-  </div>
+
   <!-- Repeat for other flats dynamically -->
 </section>
 

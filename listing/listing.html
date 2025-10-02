@@ -1,0 +1,38 @@
+<form id="listingForm">
+  <input type="text" id="title" placeholder="Flat Title" required>
+  <input type="number" id="price" placeholder="Rent Price" required>
+  <input type="number" id="flatmates" placeholder="Flatmates Allowed">
+  <input type="text" id="area" placeholder="Area" required>
+  <input type="text" id="contact" placeholder="Contact Info" required>
+  <input type="text" id="img" placeholder="Image URL">
+  <button type="submit">Post Listing</button>
+</form>
+
+<script>
+document.getElementById('listingForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  const data = {
+    title: document.getElementById('title').value,
+    price: document.getElementById('price').value,
+    flatmates: document.getElementById('flatmates').value,
+    area: document.getElementById('area').value,
+    contact: document.getElementById('contact').value,
+    img: document.getElementById('img').value
+  };
+
+  const res = await fetch('http://localhost:5000/add-listing', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  });
+
+  const result = await res.json();
+  if (result.success) {
+    alert('Listing posted successfully!');
+    window.location.href = "index.html"; // back to homepage
+  } else {
+    alert('Error: ' + result.message);
+  }
+});
+</script>

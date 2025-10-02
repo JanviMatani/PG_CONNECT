@@ -114,6 +114,7 @@ const handleFormSubmission = async () => {
 
         if (signupResponse.ok) {
             alert('Registration successful! You can now sign in.');
+             window.location.href = "../homepage/index.html";
             // Clear form
             form.reset();
             // Remove success/error classes

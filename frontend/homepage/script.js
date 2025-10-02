@@ -1,5 +1,3 @@
-// ====== PG Connect Script with Node.js Backend ======
-
 // ====== State ======
 let flats = [];
 let cart = [];
@@ -13,8 +11,8 @@ const maxRange = document.getElementById("max-range");
 const minValue = document.getElementById("min-value");
 const maxValue = document.getElementById("max-value");
 const starRadios = document.querySelectorAll('input[name="star-rating"]');
-const areaCheckboxes = document.querySelectorAll('.filters input[type="checkbox"]');
-const flatmateCheckboxes = document.querySelectorAll('.filters input[type="checkbox"]:not(#available-only)');
+const areaCheckboxes = document.querySelectorAll('.filters input.area-checkbox');
+const flatmateCheckboxes = document.querySelectorAll('.filters input.flatmate-checkbox');
 const availableOnly = document.getElementById("available-only");
 const sortSelect = document.getElementById("sort-select");
 const applyBtn = document.querySelector(".filter-actions .btn");
@@ -23,7 +21,7 @@ const cartCount = document.getElementById("cart-count");
 
 // ====== Backend API ======
 const API_BASE = "http://localhost:5000";
-const USER_ID = 1; // Replace with actual logged-in user ID
+const USER_ID = 1;
 
 // ====== Functions ======
 async function fetchFlats() {
@@ -40,7 +38,7 @@ async function fetchCart() {
   try {
     const res = await fetch(`${API_BASE}/api/cart/${USER_ID}`);
     const data = await res.json();
-    cart = data.map(f => f.flat_id); // store flat IDs
+    cart = data.map(f => f.flat_id);
     updateCartCount();
   } catch (err) {
     console.error('Error fetching cart:', err);
@@ -58,7 +56,7 @@ async function addToCart(flatId) {
     if (data.success) {
       cart.push(flatId);
       updateCartCount();
-      renderFlats(); // disable "Add" button after adding
+      renderFlats();
       alert(data.message);
     } else {
       alert(data.message);
@@ -88,15 +86,15 @@ function renderFlats() {
     if (flat.price < minPrice || flat.price > maxPrice) return false;
 
     // Rating
-    const selectedRating = [...starRadios].find(r => r.checked);
-    if (selectedRating && flat.rating < parseFloat(selectedRating.value)) return false;
+    const selectedRatingRadio = [...starRadios].find(r => r.checked);
+    if (selectedRatingRadio && parseFloat(flat.rating) < parseFloat(selectedRatingRadio.value)) return false;
 
     // Flatmates
     const selectedFlatmates = [...flatmateCheckboxes].filter(c => c.checked).map(c => parseInt(c.value));
     if (selectedFlatmates.length && !selectedFlatmates.includes(flat.flatmates)) return false;
 
     // Area
-    const selectedAreas = [...areaCheckboxes].filter(c => c.checked && c.value !== "Available Only").map(c => c.value);
+    const selectedAreas = [...areaCheckboxes].filter(c => c.checked).map(c => c.value);
     if (selectedAreas.length && !selectedAreas.includes(flat.area)) return false;
 
     // Availability
@@ -117,7 +115,6 @@ function renderFlats() {
     card.innerHTML = `
       <div class="card-inner">
         <div class="card-front">
-          <img src="${flat.img}" alt="${flat.title}">
           <h4>${flat.title}</h4>
         </div>
         <div class="card-back">
@@ -125,6 +122,7 @@ function renderFlats() {
           <p>Rent: ₹${flat.price}/month</p>
           <p>⭐ ${flat.rating} rating</p>
           <p>${flat.flatmates} Flatmates</p>
+          <p>Status: ${flat.status}</p>
           <button class="add-btn" ${cart.includes(flat.id) || flat.status !== "Available" ? 'disabled' : ''} data-id="${flat.id}">
             ${cart.includes(flat.id) ? 'Added' : 'Add'}
           </button>
@@ -137,6 +135,7 @@ function renderFlats() {
 
 // Apply / Clear filters
 function applyFilters() { renderFlats(); }
+
 function clearFilters() {
   searchInput.value = '';
   minRange.value = 1000;
@@ -151,7 +150,7 @@ function clearFilters() {
   renderFlats();
 }
 
-// Event listeners
+// ====== Event Listeners ======
 minRange.addEventListener('input', e => { minValue.textContent = e.target.value; renderFlats(); });
 maxRange.addEventListener('input', e => { maxValue.textContent = e.target.value; renderFlats(); });
 searchBtn.addEventListener('click', applyFilters);
@@ -160,7 +159,16 @@ applyBtn.addEventListener('click', applyFilters);
 clearBtn.addEventListener('click', clearFilters);
 sortSelect.addEventListener('change', renderFlats);
 
-// Delegate add-to-cart clicks
+// Rating radios
+starRadios.forEach(r => r.addEventListener('change', renderFlats));
+// Flatmate checkboxes
+flatmateCheckboxes.forEach(c => c.addEventListener('change', renderFlats));
+// Area checkboxes
+areaCheckboxes.forEach(c => c.addEventListener('change', renderFlats));
+// Availability checkbox
+availableOnly.addEventListener('change', renderFlats);
+
+// Delegate add-to-cart
 document.addEventListener('click', e => {
   if (e.target.classList.contains('add-btn')) {
     const flatId = parseInt(e.target.dataset.id);

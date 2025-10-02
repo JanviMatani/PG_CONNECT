@@ -1,55 +1,61 @@
-// Handle View Details modal
-const flatCards = document.querySelectorAll('.flat-card');
-const flatModal = document.getElementById('flatModal');
-const docModal = document.getElementById('docModal');
-const receiptModal = document.getElementById('receiptModal');
+const USER_ID = 1; // Replace with logged-in user id
 
-const modalImg = document.getElementById('modal-img');
-const modalName = document.getElementById('modal-name');
-const modalLocation = document.getElementById('modal-location');
-const modalCity = document.getElementById('modal-city');
-const modalSize = document.getElementById('modal-size');
-const modalFurnished = document.getElementById('modal-furnished');
-const modalAmenities = document.getElementById('modal-amenities');
-const modalRent = document.getElementById('modal-rent');
-
-const docName = document.getElementById('doc-name');
-const docLocation = document.getElementById('doc-location');
-const docRent = document.getElementById('doc-rent');
-
-const receiptContent = document.getElementById('receiptContent');
-
-flatCards.forEach(card => {
-  const btn = card.querySelector('.view-btn');
-  btn.addEventListener('click', () => {
-    modalImg.src = card.dataset.img;
-    modalName.textContent = card.dataset.name;
-    modalLocation.textContent = "Location: " + card.dataset.location;
-    modalCity.textContent = "City: " + card.dataset.city;
-    modalSize.textContent = "Size: " + card.dataset.size;
-    modalFurnished.textContent = "Furnished: " + card.dataset.furnished;
-    modalAmenities.textContent = "Amenities: " + card.dataset.amenities;
-    modalRent.textContent = "Rent: " + card.dataset.rent;
-    flatModal.style.display = "block";
+// Fetch flats from backend
+fetch(`http://localhost:5000/api/cart/${USER_ID}`)
+  .then(res => res.json())
+  .then(flats => {
+    const flatsSection = document.getElementById('flats-container');
+    flatsSection.innerHTML = '';
+    flats.forEach(flat => {
+      flatsSection.innerHTML += `
+        <div class="flat-card"
+             data-name="${flat.title}"
+             data-location="${flat.area}"
+             data-city="${flat.city}"
+             data-rent="₹${flat.price}/month"
+             data-img="${flat.img}"
+             data-size="${flat.flatmates}"
+             data-furnished="${flat.status}"
+             data-amenities="WiFi, Parking">
+          <img src="${flat.img}" alt="${flat.title}">
+          <div class="flat-content">
+            <h3>${flat.title}</h3>
+            <p>Location: ${flat.area}</p>
+            <p>City: ${flat.city}</p>
+            <p>Rent: ₹${flat.price}/month</p>
+            <button class="view-btn">Proceed to Payment</button>
+          </div>
+        </div>
+      `;
+    });
+    attachModalEvents();
   });
-});
 
-// Close buttons
+// Attach click events for "Proceed to Payment"
+function attachModalEvents() {
+  const flatCards = document.querySelectorAll('.flat-card');
+  const docModal = document.getElementById('docModal');
+  const docName = document.getElementById('doc-name');
+  const docLocation = document.getElementById('doc-location');
+  const docRent = document.getElementById('doc-rent');
+
+  flatCards.forEach(card => {
+    const btn = card.querySelector('.view-btn');
+    btn.addEventListener('click', () => {
+      docName.textContent = card.dataset.name;
+      docLocation.textContent = card.dataset.location;
+      docRent.textContent = card.dataset.rent;
+      docModal.style.display = "block";
+    });
+  });
+}
+
+// Close modals
 document.querySelectorAll('.close-btn').forEach(btn => {
   btn.addEventListener('click', () => {
-    flatModal.style.display = "none";
-    docModal.style.display = "none";
-    receiptModal.style.display = "none";
+    document.getElementById('docModal').style.display = "none";
+    document.getElementById('receiptModal').style.display = "none";
   });
-});
-
-// Proceed to payment
-document.getElementById('proceedPaymentBtn').addEventListener('click', () => {
-  flatModal.style.display = "none";
-  docName.textContent = modalName.textContent;
-  docLocation.textContent = modalLocation.textContent.replace('Location: ', '');
-  docRent.textContent = modalRent.textContent.replace('Rent: ', '');
-  docModal.style.display = "block";
 });
 
 // Final pay
@@ -63,20 +69,21 @@ document.getElementById('finalPayBtn').addEventListener('click', () => {
     return;
   }
 
-  docModal.style.display = "none";
-  receiptContent.innerHTML = `
-    <p>Flat: ${docName.textContent}</p>
-    <p>Location: ${docLocation.textContent}</p>
-    <p>Rent: ${docRent.textContent}</p>
+  document.getElementById('docModal').style.display = "none";
+
+  document.getElementById('receiptContent').innerHTML = `
+    <p>Flat: ${document.getElementById('doc-name').textContent}</p>
+    <p>Location: ${document.getElementById('doc-location').textContent}</p>
+    <p>Rent: ${document.getElementById('doc-rent').textContent}</p>
     <p>Paid by: ${name}</p>
     <p>Email: ${email}</p>
     <p>Phone: ${phone}</p>
     <p>Status: Payment Successful ✅</p>
   `;
-  receiptModal.style.display = "block";
+  document.getElementById('receiptModal').style.display = "block";
 });
 
 // Close receipt modal
 document.getElementById('closeReceiptBtn').addEventListener('click', () => {
-  receiptModal.style.display = "none";
+  document.getElementById('receiptModal').style.display = "none";
 });
