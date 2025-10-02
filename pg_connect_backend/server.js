@@ -16,7 +16,7 @@ const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',        // your MySQL user
     password: process.env.DB_PASSWORD,        // your MySQL password
-    database: 'pg_connect' // your database name
+    database: 'pgconnect' // your database name
 });
 
 db.connect(err => {
