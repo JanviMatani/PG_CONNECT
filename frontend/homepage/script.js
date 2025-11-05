@@ -1,7 +1,7 @@
 // ====== State ======
 let flats = [];
 let cart = [];
-//hi
+
 // ====== DOM Elements ======
 const flatsContainer = document.querySelector(".flats");
 const searchInput = document.querySelector(".search-bar input");
@@ -71,60 +71,64 @@ function updateCartCount() {
   cartCount.textContent = cart.length;
 }
 
+// ====== Render Flats ======
 function renderFlats() {
   flatsContainer.innerHTML = '';
 
+  // ====== Filtering ======
   let filtered = flats.filter(flat => {
-    // Search
+    // Search filter
     if (searchInput.value.trim()) {
       const term = searchInput.value.trim().toLowerCase();
       if (!flat.title.toLowerCase().includes(term) && !flat.area.toLowerCase().includes(term)) return false;
     }
 
-    // Price
+    // Price range filter
     const minPrice = parseInt(minRange.value) || 0;
     const maxPrice = parseInt(maxRange.value) || Infinity;
     if (flat.price < minPrice || flat.price > maxPrice) return false;
 
-    // Rating
+    // Star rating filter
     const selectedRatingRadio = [...starRadios].find(r => r.checked);
     if (selectedRatingRadio && parseFloat(flat.rating) < parseFloat(selectedRatingRadio.value)) return false;
 
-    // Flatmates
+    // Flatmates filter
     const selectedFlatmates = [...flatmateCheckboxes].filter(c => c.checked).map(c => parseInt(c.value));
     if (selectedFlatmates.length && !selectedFlatmates.includes(flat.flatmates)) return false;
 
-    // Area
+    // Area filter
     const selectedAreas = [...areaCheckboxes].filter(c => c.checked).map(c => c.value);
     if (selectedAreas.length && !selectedAreas.includes(flat.area)) return false;
 
-    // Gender
+    // Gender filter
     const selectedGenders = [...genderCheckboxes].filter(c => c.checked).map(c => c.value);
     if (selectedGenders.length && !selectedGenders.includes(flat.gender)) return false;
 
-    // Availability
+    // Availability filter
     if (availableOnly.checked && flat.status !== "Available") return false;
 
     return true;
   });
 
-  // Sorting
-  if (sortSelect.value === "low-high") filtered.sort((a,b) => a.price - b.price);
-  else if (sortSelect.value === "high-low") filtered.sort((a,b) => b.price - a.price);
-  else if (sortSelect.value === "rating") filtered.sort((a,b) => b.rating - a.rating);
+  // ====== Sorting ======
+  if (sortSelect.value === "low-high") filtered.sort((a, b) => a.price - b.price);
+  else if (sortSelect.value === "high-low") filtered.sort((a, b) => b.price - a.price);
+  else if (sortSelect.value === "rating") filtered.sort((a, b) => b.rating - a.rating);
 
-  // Render cards
+  // ====== Rendering Cards ======
   filtered.forEach(flat => {
     const card = document.createElement('div');
     card.className = 'flat-card';
     const imgSrc = flat.img ? (flat.img.startsWith('http') ? flat.img : `${API_BASE}/${flat.img}`) : '';
+    const unavailableClass = flat.status !== 'Available' ? 'unavailable' : '';
+
     card.innerHTML = `
       <div class="card-inner">
-        <div class="card-front">
-          ${imgSrc ? `<img src="${imgSrc}" alt="${flat.title}" />` : ''}
+        <div class="card-front ${unavailableClass}">
+          ${imgSrc ? `<img src="${imgSrc}" alt="${flat.title}">` : ''}
           <h4>${flat.title}</h4>
         </div>
-        <div class="card-back">
+        <div class="card-back ${unavailableClass}">
           <h4>Details</h4>
           <p>Rent: ₹${flat.price}/month</p>
           <p>⭐ ${flat.rating} rating</p>
@@ -132,7 +136,7 @@ function renderFlats() {
           <p>Gender: ${flat.gender || 'N/A'}</p>
           <p>Status: ${flat.status}</p>
           <button class="add-btn" ${cart.includes(flat.id) || flat.status !== "Available" ? 'disabled' : ''} data-id="${flat.id}">
-            ${cart.includes(flat.id) ? 'Added' : 'Add'}
+            ${cart.includes(flat.id) ? 'Added' : (flat.status !== "Available" ? 'Unavailable' : 'Add')}
           </button>
         </div>
       </div>
@@ -141,8 +145,10 @@ function renderFlats() {
   });
 }
 
-// Apply / Clear filters
-function applyFilters() { renderFlats(); }
+// ====== Filter Handlers ======
+function applyFilters() {
+  renderFlats();
+}
 
 function clearFilters() {
   searchInput.value = '';
@@ -167,19 +173,13 @@ searchInput.addEventListener('input', renderFlats);
 applyBtn.addEventListener('click', applyFilters);
 clearBtn.addEventListener('click', clearFilters);
 sortSelect.addEventListener('change', renderFlats);
-
-// Rating radios
 starRadios.forEach(r => r.addEventListener('change', renderFlats));
-// Flatmate checkboxes
 flatmateCheckboxes.forEach(c => c.addEventListener('change', renderFlats));
-// Area checkboxes
 areaCheckboxes.forEach(c => c.addEventListener('change', renderFlats));
-// Gender checkboxes
 genderCheckboxes.forEach(c => c.addEventListener('change', renderFlats));
-// Availability checkbox
 availableOnly.addEventListener('change', renderFlats);
 
-// Delegate add-to-cart
+// Add to cart button click
 document.addEventListener('click', e => {
   if (e.target.classList.contains('add-btn')) {
     const flatId = parseInt(e.target.dataset.id);

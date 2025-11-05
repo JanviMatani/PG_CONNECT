@@ -166,6 +166,20 @@ app.post('/api/cart', (req, res) => {
     });
 });
 
+app.post('/api/flats/mark-unavailable', (req, res) => {
+    const { flat_id } = req.body;
+
+    if (!flat_id) return res.status(400).json({ error: 'flat_id is required' });
+
+    const query = 'UPDATE flats SET status = "Unavailable" WHERE id = ?';
+    flatsDb.query(query, [flat_id], (err, result) => {
+        if (err) return res.status(500).json({ error: err.message });
+
+        res.json({ success: true, message: 'Flat marked as unavailable.' });
+    });
+});
+
+
 // ====== Default Route ======
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'frontend/login/login.html'));
