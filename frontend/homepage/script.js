@@ -1,7 +1,7 @@
 // ====== State ======
 let flats = [];
 let cart = [];
-
+//hi
 // ====== DOM Elements ======
 const flatsContainer = document.querySelector(".flats");
 const searchInput = document.querySelector(".search-bar input");
@@ -13,6 +13,7 @@ const maxValue = document.getElementById("max-value");
 const starRadios = document.querySelectorAll('input[name="star-rating"]');
 const areaCheckboxes = document.querySelectorAll('.filters input.area-checkbox');
 const flatmateCheckboxes = document.querySelectorAll('.filters input.flatmate-checkbox');
+const genderCheckboxes = document.querySelectorAll('.filters input.gender-checkbox');
 const availableOnly = document.getElementById("available-only");
 const sortSelect = document.getElementById("sort-select");
 const applyBtn = document.querySelector(".filter-actions .btn");
@@ -97,6 +98,10 @@ function renderFlats() {
     const selectedAreas = [...areaCheckboxes].filter(c => c.checked).map(c => c.value);
     if (selectedAreas.length && !selectedAreas.includes(flat.area)) return false;
 
+    // Gender
+    const selectedGenders = [...genderCheckboxes].filter(c => c.checked).map(c => c.value);
+    if (selectedGenders.length && !selectedGenders.includes(flat.gender)) return false;
+
     // Availability
     if (availableOnly.checked && flat.status !== "Available") return false;
 
@@ -112,9 +117,11 @@ function renderFlats() {
   filtered.forEach(flat => {
     const card = document.createElement('div');
     card.className = 'flat-card';
+    const imgSrc = flat.img ? (flat.img.startsWith('http') ? flat.img : `${API_BASE}/${flat.img}`) : '';
     card.innerHTML = `
       <div class="card-inner">
         <div class="card-front">
+          ${imgSrc ? `<img src="${imgSrc}" alt="${flat.title}" />` : ''}
           <h4>${flat.title}</h4>
         </div>
         <div class="card-back">
@@ -122,6 +129,7 @@ function renderFlats() {
           <p>Rent: ₹${flat.price}/month</p>
           <p>⭐ ${flat.rating} rating</p>
           <p>${flat.flatmates} Flatmates</p>
+          <p>Gender: ${flat.gender || 'N/A'}</p>
           <p>Status: ${flat.status}</p>
           <button class="add-btn" ${cart.includes(flat.id) || flat.status !== "Available" ? 'disabled' : ''} data-id="${flat.id}">
             ${cart.includes(flat.id) ? 'Added' : 'Add'}
@@ -145,6 +153,7 @@ function clearFilters() {
   starRadios.forEach(r => r.checked = false);
   areaCheckboxes.forEach(c => c.checked = false);
   flatmateCheckboxes.forEach(c => c.checked = false);
+  genderCheckboxes.forEach(c => c.checked = false);
   availableOnly.checked = false;
   sortSelect.value = 'default';
   renderFlats();
@@ -165,6 +174,8 @@ starRadios.forEach(r => r.addEventListener('change', renderFlats));
 flatmateCheckboxes.forEach(c => c.addEventListener('change', renderFlats));
 // Area checkboxes
 areaCheckboxes.forEach(c => c.addEventListener('change', renderFlats));
+// Gender checkboxes
+genderCheckboxes.forEach(c => c.addEventListener('change', renderFlats));
 // Availability checkbox
 availableOnly.addEventListener('change', renderFlats);
 

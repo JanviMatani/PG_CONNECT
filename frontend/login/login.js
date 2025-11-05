@@ -77,7 +77,7 @@ const handleLogin = async () => {
 
         if (response.ok) {
             alert(`Welcome back, ${data.user.username}!`);
-            // Store user info in localStorage for session management
+            // Store user info in localStorage for session management (includes gender)
             localStorage.setItem('user', JSON.stringify(data.user));
             // Redirect to dashboard or main page
             window.location.href = '../homepage/index.html';

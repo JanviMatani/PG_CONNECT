@@ -1,23 +1,25 @@
 const USER_ID = 1; // Replace with logged-in user id
+const API_BASE = "http://localhost:5000";
 
 // Fetch flats from backend
-fetch(`http://localhost:5000/api/cart/${USER_ID}`)
+fetch(`${API_BASE}/api/cart/${USER_ID}`)
   .then(res => res.json())
   .then(flats => {
     const flatsSection = document.getElementById('flats-container');
     flatsSection.innerHTML = '';
     flats.forEach(flat => {
+      const imgSrc = flat.img ? (flat.img.startsWith('http') ? flat.img : `${API_BASE}/${flat.img}`) : '';
       flatsSection.innerHTML += `
         <div class="flat-card"
              data-name="${flat.title}"
              data-location="${flat.area}"
              data-city="${flat.city}"
              data-rent="₹${flat.price}/month"
-             data-img="${flat.img}"
+             data-img="${imgSrc}"
              data-size="${flat.flatmates}"
              data-furnished="${flat.status}"
              data-amenities="WiFi, Parking">
-          <img src="${flat.img}" alt="${flat.title}">
+          <img src="${imgSrc}" alt="${flat.title}">
           <div class="flat-content">
             <h3>${flat.title}</h3>
             <p>Location: ${flat.area}</p>

@@ -1,4 +1,5 @@
 /* Reset */
+/*changes made*/
 * {
   margin: 0;
   padding: 0;
@@ -185,9 +186,18 @@ body {
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  transition: all 0.3s ease;
+}
+
+.card-front {
+  background: white;
+  justify-content: flex-start;
+  align-items: stretch;
+}
+
+.card-back {
   justify-content: center;
   align-items: center;
-  transition: all 0.3s ease;
 }
 
 .card-front img {

@@ -3,11 +3,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const revealer = document.getElementById('center-revealer');
     const logoText = document.getElementById('logo-text');
     const mainContent = document.getElementById('main-content');
-    
-    // Define timing constants
-    const EXPANSION_DELAY = 100; 
-    const LOGO_FADE_IN_DELAY = 1500; 
-    const TOTAL_DURATION = 5000; // 5 seconds total
+
+
+    const EXPANSION_DELAY = 100;
+    const LOGO_FADE_IN_DELAY = 1500;
+    const TOTAL_DURATION = 5000; 
 
     // 1. STAGE 1: Start the rectangle expansion
     setTimeout(() => {
@@ -31,14 +31,14 @@ document.addEventListener('DOMContentLoaded', () => {
             // Reveal the main content by setting its opacity to 1 (handled by CSS transition)
             mainContent.classList.remove('hidden');
             mainContent.style.opacity = '1';
-        }, 500); 
+        }, 500);
 
-    }, TOTAL_DURATION); 
+    }, TOTAL_DURATION);
 
     document.querySelectorAll('.nav-button, .nav-item, .cta-primary').forEach(link => {
         link.addEventListener('click', (e) => {
             console.log(`${e.target.textContent} clicked!`);
         });
     });
-    
+
 });

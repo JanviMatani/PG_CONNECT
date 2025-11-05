@@ -3,6 +3,7 @@ const username = document.getElementById('username');
 const email = document.getElementById('email');
 const password = document.getElementById('password');
 const password2 = document.getElementById('password2');
+const gender = document.getElementById('gender');
 
 form.addEventListener('submit', async e => {
     e.preventDefault();
@@ -40,6 +41,7 @@ const validateInputs = () => {
     const emailValue = email.value.trim();
     const passwordValue = password.value.trim();
     const password2Value = password2.value.trim();
+    const genderValue = gender.value;
 
     let isValid = true;
 
@@ -77,12 +79,20 @@ const validateInputs = () => {
         setSuccess(password2);
     }
 
+    if(genderValue === '') {
+        setError(gender, 'Please select your gender');
+        isValid = false;
+    } else {
+        setSuccess(gender);
+    }
+
     return isValid;
 };
 const handleFormSubmission = async () => {
     const usernameValue = username.value.trim();
     const emailValue = email.value.trim();
     const passwordValue = password.value.trim();
+    const genderValue = gender.value;
 
     try {
         // Check if email already exists
@@ -106,7 +116,8 @@ const handleFormSubmission = async () => {
             body: JSON.stringify({
                 username: usernameValue,
                 email: emailValue,
-                password: passwordValue
+                password: passwordValue,
+                gender: genderValue
             })
         });
 
